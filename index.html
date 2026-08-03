@@ -3057,8 +3057,8 @@
 
 <article class="card settings-bar-card">
           <div class="settings-bar-hd">
-            <h2>数据备份</h2>
-            <p class="install-help">导出会生成 JSON 文件；导入会覆盖当前网页内的小树考研上岸数据。</p>
+            <h2>数据备份 <span id="backupReminderBadge" style="display:none;background:var(--danger,#e74c3c);color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle;"></span></h2>
+            <p class="install-help">导出会生成 JSON 文件；导入会覆盖当前网页内的小树考研上岸数据。建议每周导出一次，存到 iCloud 或文件 App 防丢失。</p>
           </div>
           <div class="settings-bar-actions">
             <button class="btn primary" id="exportBtn">导出数据</button>
@@ -3085,8 +3085,8 @@
         </article>
 <article class="card settings-bar-card">
           <div class="settings-bar-hd">
-            <h2>主屏幕 / 浏览器同步</h2>
-            <p class="install-help">iPad 的 Safari 和主屏幕 App 可能是两套本地数据。先在有数据的一边点“复制同步码”，再到另一边点“粘贴同步码”。</p>
+            <h2>主屏幕 / 浏览器同步 <span id="cloudSyncBadge" style="display:none;background:#f2c98d;color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle;">待同步</span></h2>
+            <p class="install-help">数据已开启云端自动同步，换设备打开会自动拉取最新数据。也可手动用同步码在设备间传输。</p>
           </div>
           <div class="settings-bar-actions">
             <button class="btn primary" id="copySyncBtn">复制同步码</button>
@@ -3215,7 +3215,104 @@
 
       var STORAGE_KEY = "xiaoshu_kaoyan_buddy_v1";
       var BACKUP_STORAGE_KEY = "xiaoshu_kaoyan_buddy_backup_v1";
+      var BACKUP_REMIND_KEY = "xiaoshu_last_backup_time";
       var THEME_KEY = "xiaoshu_theme";
+
+      // ====== Cloud Sync (JSONBin) ======
+      var CLOUD_BIN_ID = "6a70c418f5f4af5e29e5eedf";
+      var CLOUD_API_KEY = "$2a$10$wW8JrhLbxpP3Ij.DmH6AcOOJRzgDgyvGTGQVMTe7E7to.mDED8BiO";
+      var CLOUD_URL = "https://api.jsonbin.io/v3/b/" + CLOUD_BIN_ID;
+      var cloudSyncEnabled = true;
+      var cloudLastSync = 0;
+      var cloudSyncPending = false;
+      var cloudSyncTimer = null;
+
+      function cloudSaveState(state) {
+        if (!cloudSyncEnabled) return;
+        if (cloudSyncTimer) clearTimeout(cloudSyncTimer);
+        cloudSyncTimer = setTimeout(function () {
+          try {
+            var data = JSON.stringify(state);
+            var xhr = new XMLHttpRequest();
+            xhr.open("PUT", CLOUD_URL, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("X-Master-Key", CLOUD_API_KEY);
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4) {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                  cloudLastSync = Date.now();
+                  updateCloudSyncBadge();
+                }
+              }
+            };
+            xhr.send(data);
+          } catch (e) {
+            console.warn("云端同步失败:", e);
+          }
+        }, 3000);
+      }
+
+      function cloudLoadState() {
+        return new Promise(function (resolve) {
+          if (!cloudSyncEnabled) { resolve(null); return; }
+          try {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", CLOUD_URL + "/latest", true);
+            xhr.setRequestHeader("X-Master-Key", CLOUD_API_KEY);
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4) {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                  try {
+                    var resp = JSON.parse(xhr.responseText);
+                    resolve(resp.record || null);
+                  } catch (e) { resolve(null); }
+                } else {
+                  resolve(null);
+                }
+              }
+            };
+            xhr.timeout = 8000;
+            xhr.ontimeout = function () { resolve(null); };
+            xhr.onerror = function () { resolve(null); };
+            xhr.send();
+          } catch (e) { resolve(null); }
+        });
+      }
+
+      function mergeCloudData(localState, cloudData) {
+        if (!cloudData || !cloudData.subjectTotals) return localState;
+        var localTotal = Number(localState.subjectTotals.western || 0) + Number(localState.subjectTotals.english || 0) + Number(localState.subjectTotals.politics || 0);
+        var cloudTotal = Number(cloudData.subjectTotals.western || 0) + Number(cloudData.subjectTotals.english || 0) + Number(cloudData.subjectTotals.politics || 0);
+        var localTime = localState.updatedAt ? new Date(localState.updatedAt).getTime() : 0;
+        var cloudTime = cloudData.updatedAt ? new Date(cloudData.updatedAt).getTime() : 0;
+        if (cloudTotal > localTotal || (cloudTotal === localTotal && cloudTime > localTime)) {
+          return normalize(cloudData);
+        }
+        return localState;
+      }
+
+      function updateCloudSyncBadge() {
+        var badge = $("cloudSyncBadge");
+        if (!badge) return;
+        if (!cloudSyncEnabled) {
+          badge.style.display = "none";
+          return;
+        }
+        badge.style.display = "inline-block";
+        if (cloudLastSync) {
+          var secs = Math.floor((Date.now() - cloudLastSync) / 1000);
+          if (secs < 60) {
+            badge.textContent = "已同步";
+            badge.style.background = "#3a9e84";
+          } else {
+            badge.textContent = "已同步";
+            badge.style.background = "#3a9e84";
+          }
+        } else {
+          badge.textContent = "待同步";
+          badge.style.background = "#f2c98d";
+        }
+      }
 
       var SUBJECTS = [
         { key: "western", name: "西综", color: "#8fcfe3" },
@@ -4240,6 +4337,8 @@
           }
           // Always also save to IndexedDB for reliability
           idbSave(appState);
+          // Cloud sync (debounced, non-blocking)
+          cloudSaveState(appState);
           lastSaveOk = true;
           lastSaveTime = new Date();
           updateSaveIndicator();
@@ -4440,6 +4539,41 @@
         showToast.tid = setTimeout(function () {
           toast.classList.remove("show");
         }, 2200);
+      }
+
+      function getLastBackupTime() {
+        try {
+          var t = localStorage.getItem(BACKUP_REMIND_KEY);
+          return t ? parseInt(t, 10) : 0;
+        } catch (e) { return 0; }
+      }
+
+      function getDaysSinceBackup() {
+        var last = getLastBackupTime();
+        if (!last) return 999;
+        return Math.floor((Date.now() - last) / 86400000);
+      }
+
+      function checkBackupReminder() {
+        var days = getDaysSinceBackup();
+        if (days >= 6) {
+          var msg = days >= 999
+            ? "你还没有导出过数据备份，建议导出到本地防止丢失哦～"
+            : "距上次备份已 " + days + " 天，建议导出一份新备份～";
+          setTimeout(function () { showToast(msg); }, 1500);
+        }
+      }
+
+      function updateBackupReminderBadge() {
+        var badge = $("backupReminderBadge");
+        if (!badge) return;
+        var days = getDaysSinceBackup();
+        if (days >= 6) {
+          badge.style.display = "inline-block";
+          badge.textContent = days >= 999 ? "未备份" : "已" + days + "天";
+        } else {
+          badge.style.display = "none";
+        }
       }
 
       function randomQuoteIndex(current) {
@@ -5222,6 +5356,9 @@
           var apt = $("autoPostponeToggle");
           if (apt) apt.checked = appState.autoPostponeEnabled !== false;
         } catch (e) {}
+        try { updateBackupReminderBadge(); } catch (e) {}
+        try { checkBackupReminder(); } catch (e) {}
+        try { updateCloudSyncBadge(); } catch (e) {}
       }
 
       function renderHome() {
@@ -6764,7 +6901,9 @@
           a.click();
           a.remove();
           URL.revokeObjectURL(url);
+          try { localStorage.setItem(BACKUP_REMIND_KEY, String(Date.now())); } catch (e) {}
           showToast("已导出数据备份。");
+          updateBackupReminderBadge();
         });
 
         $("importBtn").addEventListener("click", function () {
@@ -6865,7 +7004,7 @@
               return reg.update().then(function () {
                 return caches.keys().then(function (keys) {
                   return Promise.all(keys.filter(function (k) {
-                    return k.indexOf("xiaoshu-kaoyan-buddy") !== -1 && k !== "xiaoshu-kaoyan-buddy-v93";
+                    return k.indexOf("xiaoshu-kaoyan-buddy") !== -1 && k !== "xiaoshu-kaoyan-buddy-v96";
                   }).map(function (k) { return caches.delete(k); }));
                 });
               }).then(function () {
@@ -7095,6 +7234,28 @@
         }).catch(function () {});
       }
 
+      // Cloud sync: load data from cloud and merge
+      cloudLoadState().then(function (cloudData) {
+        if (cloudData && cloudData.subjectTotals) {
+          var merged = mergeCloudData(appState, cloudData);
+          if (merged !== appState) {
+            appState = merged;
+            applyTomatodoImport();
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+              localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(appState));
+            } catch (e) {}
+            render();
+            var cloudTotal = Number(cloudData.subjectTotals.western || 0) + Number(cloudData.subjectTotals.english || 0) + Number(cloudData.subjectTotals.politics || 0);
+            setTimeout(function () {
+              showToast("已从云端同步，累计" + formatTime(cloudTotal) + "。");
+            }, 1000);
+          }
+          cloudLastSync = Date.now();
+          updateCloudSyncBadge();
+        }
+      });
+
       // Start countdown timer
       updateCountdown();
       updateHomeDateTime();
@@ -7106,7 +7267,7 @@
       bindEvents();
 
       if ("serviceWorker" in navigator) {
-        var APP_VERSION = "v93-20260802";
+        var APP_VERSION = "v96-20260803";
         var refreshing = false;
 
         navigator.serviceWorker.addEventListener("controllerchange", function () {
@@ -7143,7 +7304,7 @@
         }
 
         window.addEventListener("load", function () {
-          navigator.serviceWorker.register("./service-worker.js?v=88").then(function (reg) {
+          navigator.serviceWorker.register("./service-worker.js?v=96").then(function (reg) {
             reg.addEventListener("updatefound", function () {
               var newWorker = reg.installing;
               if (newWorker) {
