@@ -2788,13 +2788,13 @@
         <div class="brand-bear"></div>
         <div class="brand-text">小树<br>加油</div>
       </a>
-      <a class="nav-link nav-go active" href="#home" data-screen="home"><img class="nav-icon" src="./assets/nav-icons/nav-home.png" alt="" />首页</a>
-      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="western"><img class="nav-icon" src="./assets/nav-icons/nav-western.png" alt="" />西综</a>
-      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="english"><img class="nav-icon" src="./assets/nav-icons/nav-english.png" alt="" />英语</a>
-      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="politics"><img class="nav-icon" src="./assets/nav-icons/nav-politics.png" alt="" />政治</a>
-      <a class="nav-link nav-go" href="#stats" data-screen="stats"><img class="nav-icon" src="./assets/nav-icons/nav-stats.png" alt="" />统计</a>
-      <a class="nav-link nav-go" href="#leisure" data-screen="leisure"><img class="nav-icon" src="./assets/nav-icons/nav-leisure.png" alt="" />休闲</a>
-      <a class="nav-link nav-go" href="#settings" data-screen="settings"><img class="nav-icon" src="./assets/nav-icons/nav-settings.png" alt="" />设置</a>
+      <a class="nav-link nav-go active" href="#home" data-screen="home"><img class="nav-icon" src="./assets/nav-icons/nav-home.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />首页</a>
+      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="western"><img class="nav-icon" src="./assets/nav-icons/nav-western.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />西综</a>
+      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="english"><img class="nav-icon" src="./assets/nav-icons/nav-english.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />英语</a>
+      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="politics"><img class="nav-icon" src="./assets/nav-icons/nav-politics.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />政治</a>
+      <a class="nav-link nav-go" href="#stats" data-screen="stats"><img class="nav-icon" src="./assets/nav-icons/nav-stats.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />统计</a>
+      <a class="nav-link nav-go" href="#leisure" data-screen="leisure"><img class="nav-icon" src="./assets/nav-icons/nav-leisure.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />休闲</a>
+      <a class="nav-link nav-go" href="#settings" data-screen="settings"><img class="nav-icon" src="./assets/nav-icons/nav-settings.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />设置</a>
     </nav>
 
     <main class="content">
@@ -2832,7 +2832,7 @@
             <div class="metric-label">距 2026-12-19 考研</div>
             <div class="countdown-display" id="countdownDisplay">000天 00:00:00</div>
             <div class="phase-text" id="phaseText">现在开始，每一页都在靠近上岸</div>
-            <img class="countdown-bear" src="./assets/new-bears/bear-new-07.gif" alt="备考小熊" />
+            <img class="countdown-bear" src="./assets/new-bears/bear-new-07.gif" alt="备考小熊" onerror="this.onerror=null;this.src='./assets/bear-study.gif';" />
           </article>
 
           <article class="card home-stats-card">
@@ -2872,7 +2872,7 @@
         <article class="card timer-card">
           <div class="subject-head" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
             <div class="subject-title-inline">
-              <img class="timer-bear" id="timerBear" src="./assets/bear-cheer.gif" alt="科目自嘲熊" />
+              <img class="timer-bear" id="timerBear" src="./assets/bear-cheer.gif" alt="科目自嘲熊" onerror="this.onerror=null;this.src='./assets/bear-study.gif';" />
               <h2 id="activeSubjectName" style="margin-bottom:0;">西综</h2>
             </div>
             <span class="pill" id="timerState" style="display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:0 10px;border-radius:999px;color:var(--accent-deep);background:var(--bg2);font-size:12px;font-weight:900;">未开始</span>
@@ -2907,7 +2907,7 @@
 
         <article class="card subject-companion-card">
           <div class="subject-companion-top">
-            <img class="subject-companion-bear" id="subjectCompanionBear" src="./assets/bear-cheer.gif" alt="陪学小熊" />
+            <img class="subject-companion-bear" id="subjectCompanionBear" src="./assets/bear-cheer.gif" alt="陪学小熊" onerror="this.onerror=null;this.src='./assets/bear-study.gif';" />
             <div>
               <div class="subject-companion-title" id="subjectCompanionTitle">今日小熊陪学</div>
               <div class="subject-companion-desc" id="subjectCompanionDesc">小熊在旁边，陪你把这一科稳稳拿下。</div>
@@ -3208,7 +3208,7 @@
   </div>
 
   <script src="./assets/tomatodo-import-v61.js"></script>
-  <script src="./assets/study-plan-v80.js"></script>
+  <script src="./assets/study-plan-v81.js"></script>
   <script>
     (function () {
       "use strict";
@@ -7004,7 +7004,7 @@
               return reg.update().then(function () {
                 return caches.keys().then(function (keys) {
                   return Promise.all(keys.filter(function (k) {
-                    return k.indexOf("xiaoshu-kaoyan-buddy") !== -1 && k !== "xiaoshu-kaoyan-buddy-v96";
+                    return k.indexOf("xiaoshu-kaoyan-buddy") !== -1 && k !== "xiaoshu-kaoyan-buddy-v98";
                   }).map(function (k) { return caches.delete(k); }));
                 });
               }).then(function () {
@@ -7267,7 +7267,7 @@
       bindEvents();
 
       if ("serviceWorker" in navigator) {
-        var APP_VERSION = "v96-20260803";
+        var APP_VERSION = "v98-20260805";
         var refreshing = false;
 
         navigator.serviceWorker.addEventListener("controllerchange", function () {
@@ -7304,7 +7304,7 @@
         }
 
         window.addEventListener("load", function () {
-          navigator.serviceWorker.register("./service-worker.js?v=96").then(function (reg) {
+          navigator.serviceWorker.register("./service-worker.js?v=98").then(function (reg) {
             reg.addEventListener("updatefound", function () {
               var newWorker = reg.installing;
               if (newWorker) {
@@ -7324,6 +7324,51 @@
               reg.waiting.postMessage("SKIP_WAITING");
             }
           });
+
+          // ====== 自愈机制：检查并重新缓存缺失的资源 ======
+          // 浏览器可能在长时间不使用后清理部分缓存，导致图标/图片消失
+          // 每次打开时检查关键资源是否在缓存中，缺失则重新获取并缓存
+          var CRITICAL_ASSETS = [
+            "./assets/nav-icons/nav-home.png",
+            "./assets/nav-icons/nav-western.png",
+            "./assets/nav-icons/nav-english.png",
+            "./assets/nav-icons/nav-politics.png",
+            "./assets/nav-icons/nav-leisure.png",
+            "./assets/nav-icons/nav-stats.png",
+            "./assets/nav-icons/nav-settings.png",
+            "./assets/bear-study.gif",
+            "./assets/bear-cheer.gif",
+            "./assets/bear-flower.jpg",
+            "./assets/bear-persist.gif",
+            "./assets/bear-shine.gif",
+            "./assets/new-bears/bear-new-01.gif",
+            "./assets/new-bears/bear-new-02.gif",
+            "./assets/new-bears/bear-new-03.gif",
+            "./assets/new-bears/bear-new-04.gif",
+            "./assets/new-bears/bear-new-05.gif",
+            "./assets/new-bears/bear-new-06.gif",
+            "./assets/new-bears/bear-new-07.gif",
+            "./assets/new-bears/bear-new-08.gif",
+            "./assets/new-bears/bear-new-09.gif",
+            "./assets/new-bears/bear-new-10.gif",
+            "./assets/new-bears/bear-new-11.gif"
+          ];
+          if (caches && caches.open) {
+            caches.open("xiaoshu-kaoyan-buddy-v98").then(function(cache) {
+              CRITICAL_ASSETS.forEach(function(asset) {
+                cache.match(asset).then(function(cached) {
+                  if (!cached) {
+                    // 缓存中缺失，从网络重新获取并缓存
+                    fetch(asset).then(function(resp) {
+                      if (resp && resp.status === 200) {
+                        cache.put(asset, resp.clone());
+                      }
+                    }).catch(function() {});
+                  }
+                }).catch(function() {});
+              });
+            }).catch(function() {});
+          }
         });
       }
 

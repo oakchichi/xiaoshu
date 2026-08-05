@@ -1,4 +1,4 @@
-var CACHE_NAME = "xiaoshu-kaoyan-buddy-v96";
+var CACHE_NAME = "xiaoshu-kaoyan-buddy-v98";
 var ASSETS = [
   "./",
   "./index.html",
@@ -13,6 +13,10 @@ var ASSETS = [
   "./assets/bear-hula.gif",
   "./assets/bear-panic.gif",
   "./assets/bear-shine.gif",
+  "./assets/bear-flower-2.jpg",
+  "./assets/bear-flower-latest.jpg",
+  "./assets/bear-mask.gif",
+  "./assets/bear-read.gif",
   "./assets/quote-bear-01.gif",
   "./assets/quote-bear-02.gif",
   "./assets/quote-bear-03.gif",
@@ -62,14 +66,27 @@ var ASSETS = [
   "./assets/nav-icons/nav-leisure.png",
   "./assets/nav-icons/nav-stats.png",
   "./assets/nav-icons/nav-settings.png",
+  "./assets/nav-icons/source.png",
   "./assets/tomatodo-import-v61.js",
-  "./assets/study-plan-v80.js"
+  "./assets/study-plan-v81.js",
+  "./assets/leisure-materials.js",
+  "./assets/study-plan-v79.js",
+  "./assets/tomatodo-import-v56.js",
+  "./assets/tomatodo-import-v59.js"
 ];
 
+// 安装时预缓存所有资源
 self.addEventListener("install", function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
-      return cache.addAll(ASSETS);
+      // 逐个缓存，即使部分失败也不阻塞
+      return Promise.allSettled(
+        ASSETS.map(function(asset) {
+          return cache.add(asset).catch(function(err) {
+            console.warn("缓存失败:", asset, err.message);
+          });
+        })
+      );
     })
   );
   self.skipWaiting();
@@ -81,6 +98,7 @@ self.addEventListener("message", function(event) {
   }
 });
 
+// 激活时清除旧缓存并重新预热
 self.addEventListener("activate", function(event) {
   event.waitUntil(
     caches.keys().then(function(keys) {
@@ -91,10 +109,48 @@ self.addEventListener("activate", function(event) {
           return caches.delete(key);
         })
       );
+    }).then(function() {
+      // 激活后立即预热缓存，防止资源丢失
+      return caches.open(CACHE_NAME).then(function(cache) {
+        return Promise.allSettled(
+          ASSETS.map(function(asset) {
+            return cache.match(asset).then(function(cached) {
+              if (!cached) {
+                return fetch(asset).then(function(resp) {
+                  if (resp && resp.status === 200) {
+                    return cache.put(asset, resp.clone());
+                  }
+                }).catch(function() {});
+              }
+              return cached;
+            }).catch(function() {});
+          })
+        );
+      });
     })
   );
   self.clients.claim();
 });
+
+// 判断是否为静态资源
+function isStaticAsset(url) {
+  var pathname = url.pathname.toLowerCase();
+  return (
+    pathname.endsWith(".gif") ||
+    pathname.endsWith(".jpg") ||
+    pathname.endsWith(".jpeg") ||
+    pathname.endsWith(".png") ||
+    pathname.endsWith(".svg") ||
+    pathname.endsWith(".webp") ||
+    pathname.endsWith(".js") ||
+    pathname.endsWith(".css") ||
+    pathname.endsWith(".json") ||
+    pathname.endsWith(".woff") ||
+    pathname.endsWith(".woff2") ||
+    pathname.endsWith(".ttf") ||
+    pathname.endsWith(".ico")
+  );
+}
 
 self.addEventListener("fetch", function(event) {
   if (event.request.method !== "GET") return;
@@ -103,6 +159,7 @@ self.addEventListener("fetch", function(event) {
   var acceptsHtml = event.request.headers.get("accept") || "";
   var isPageRequest = event.request.mode === "navigate" || acceptsHtml.indexOf("text/html") !== -1;
 
+  // HTML 页面：network-first（保证能拿到最新版本）
   if (isSameOrigin && isPageRequest) {
     event.respondWith(
       fetch(event.request).then(function(response) {
@@ -121,20 +178,75 @@ self.addEventListener("fetch", function(event) {
     return;
   }
 
-  event.respondWith(
-    fetch(event.request).then(function(response) {
-      if (isSameOrigin && response && response.status === 200) {
-        var copy = response.clone();
-        caches.open(CACHE_NAME).then(function(cache) {
-          cache.put(event.request, copy);
+  // 静态资源：cache-first（优先用缓存，缓存没有才请求网络）
+  // 这样即使断网或浏览器清理了部分缓存，已缓存的资源也不会丢失
+  if (isSameOrigin && isStaticAsset(url)) {
+    event.respondWith(
+      caches.match(event.request).then(function(cached) {
+        if (cached) {
+          // 缓存命中，直接返回（同时在后台更新缓存）
+          fetch(event.request).then(function(response) {
+            if (response && response.status === 200) {
+              caches.open(CACHE_NAME).then(function(cache) {
+                cache.put(event.request, response.clone());
+              });
+            }
+          }).catch(function() {});
+          return cached;
+        }
+        // 缓存未命中，从网络获取并缓存
+        return fetch(event.request).then(function(response) {
+          if (response && response.status === 200) {
+            var copy = response.clone();
+            caches.open(CACHE_NAME).then(function(cache) {
+              cache.put(event.request, copy);
+            });
+          }
+          return response;
+        }).catch(function() {
+          // 网络也失败，返回空响应避免崩溃
+          return new Response("", { status: 504, statusText: "Offline" });
         });
-      }
-      return response;
-    }).catch(function() {
+      })
+    );
+    return;
+  }
+
+  // 其他同源请求：cache-first with network update
+  if (isSameOrigin) {
+    event.respondWith(
+      caches.match(event.request).then(function(cached) {
+        if (cached) {
+          fetch(event.request).then(function(response) {
+            if (response && response.status === 200) {
+              caches.open(CACHE_NAME).then(function(cache) {
+                cache.put(event.request, response.clone());
+              });
+            }
+          }).catch(function() {});
+          return cached;
+        }
+        return fetch(event.request).then(function(response) {
+          if (response && response.status === 200) {
+            var copy = response.clone();
+            caches.open(CACHE_NAME).then(function(cache) {
+              cache.put(event.request, copy);
+            });
+          }
+          return response;
+        }).catch(function() {
+          return new Response("", { status: 504, statusText: "Offline" });
+        });
+      })
+    );
+    return;
+  }
+
+  // 跨域请求：直接走网络
+  event.respondWith(
+    fetch(event.request).catch(function() {
       return caches.match(event.request).then(function(cached) {
-        if (cached) return cached;
-        if (isPageRequest) return caches.match("./index.html");
-        return new Response("", { status: 504, statusText: "Offline" });
+        return cached || new Response("", { status: 504, statusText: "Offline" });
       });
     })
   );
