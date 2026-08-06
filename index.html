@@ -1687,6 +1687,19 @@
       pointer-events: none;
       transition: 0.2s ease;
       font-weight: 800;
+      max-width: calc(100vw - var(--nav-w) - 28px);
+      overflow-wrap: break-word;
+    }
+
+    @media (max-width: 480px) {
+      .toast {
+        left: calc(var(--nav-w) + 6px);
+        right: 6px;
+        bottom: calc(12px + var(--safe-bottom));
+        padding: 10px 10px;
+        font-size: 12px;
+        max-width: calc(100vw - var(--nav-w) - 12px);
+      }
     }
 
     .toast.show {
@@ -2552,17 +2565,347 @@
       font-style: italic;
     }
 
-    @media (max-width: 380px) {
-      :root { --nav-w: 78px; }
-      .content {
-        padding-right: 10px;
-        padding-left: calc(var(--nav-w) + 10px);
+    /* ====== 平板适配（481px - 759px） ====== */
+    @media (min-width: 481px) and (max-width: 759px) {
+      :root { --nav-w: 80px; }
+      .side-nav {
+        padding: 12px 6px calc(12px + var(--safe-bottom));
+        gap: 6px;
       }
-      .side-nav { padding-inline: 6px; }
-      .nav-link { font-size: 11px; }
+      .nav-link {
+        min-height: 52px;
+        font-size: 11px;
+        padding: 6px 4px;
+        border-radius: 16px;
+        gap: 3px;
+      }
+      .nav-icon {
+        width: 26px;
+        height: 26px;
+      }
+      .brand-bear {
+        width: 32px;
+        height: 28px;
+      }
+      .brand-text {
+        font-size: 10px;
+      }
+      .content {
+        padding: 14px 12px calc(24px + var(--safe-bottom)) calc(var(--nav-w) + 12px);
+      }
+      .hero {
+        padding: 18px 14px 100px;
+        border-radius: 24px;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 14px 12px;
+        border-radius: 22px;
+      }
+      .timer-display {
+        font-size: 36px !important;
+      }
+      .stats-heatmap-cell {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 9px !important;
+      }
+    }
+
+    /* ====== 手机端适配（≤480px） ====== */
+    @media (max-width: 480px) {
+      :root { --nav-w: 62px; }
+      .side-nav {
+        padding: 8px 3px calc(8px + var(--safe-bottom));
+        gap: 3px;
+      }
+      .brand {
+        min-height: 44px;
+        padding: 4px 2px;
+        border-radius: 16px;
+      }
+      .brand-bear {
+        width: 26px;
+        height: 22px;
+        margin: 0 auto 2px;
+        border-radius: 8px;
+      }
+      .brand-text {
+        font-size: 8px;
+        line-height: 1.1;
+      }
+      .nav-link {
+        min-height: 42px;
+        font-size: 9px;
+        border-radius: 12px;
+        padding: 4px 2px;
+        gap: 2px;
+      }
+      .nav-icon {
+        width: 20px;
+        height: 20px;
+      }
+      .content {
+        padding: 8px 6px calc(16px + var(--safe-bottom)) calc(var(--nav-w) + 6px);
+      }
+      .hero {
+        padding: 12px 10px 80px;
+        border-radius: 18px;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 10px 8px;
+        border-radius: 16px;
+      }
+      .card h2 {
+        font-size: 14px;
+      }
+      .btn {
+        font-size: 11px;
+        padding: 7px 12px;
+        border-radius: 12px;
+      }
+      .btn.primary {
+        font-size: 11px;
+        padding: 7px 14px;
+      }
+      .countdown-display {
+        font-size: 16px !important;
+      }
+      .home-countdown-hero .countdown-bear {
+        width: 52px !important;
+        height: 52px !important;
+      }
+      .big-bear {
+        width: 88px !important;
+        height: 88px !important;
+        right: 10px !important;
+        bottom: 8px !important;
+      }
+      .speech {
+        max-width: 130px !important;
+        font-size: 11px !important;
+        right: 100px !important;
+        bottom: 44px !important;
+      }
+      .stats-month-panel {
+        grid-template-columns: 1fr;
+      }
+      .stats-heatmap-cell {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 7px !important;
+      }
+      .plan-task {
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 6px 4px;
+        border-radius: 12px;
+      }
+      .plan-task-content {
+        font-size: 11px;
+        line-height: 1.4;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+      .plan-task-time {
+        font-size: 10px;
+        min-width: auto;
+      }
+      .plan-task-subject {
+        font-size: 10px;
+        padding: 1px 6px;
+      }
+      .plan-period {
+        font-size: 10px;
+        padding: 2px 0;
+      }
+      .plan-review-tag {
+        font-size: 8px;
+        padding: 1px 5px;
+      }
+      .plan-task-delay-note {
+        font-size: 8px !important;
+      }
+      .plan-task-checkbox {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+      .timer-display {
+        font-size: 28px !important;
+      }
+      .stats-card-row {
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .stats-card-row .stat-item {
+        font-size: 10px;
+        min-width: 56px;
+      }
+      .cal-modal-content {
+        width: 96% !important;
+        max-height: 88vh !important;
+        border-radius: 18px !important;
+      }
+      .cal-day-cell {
+        min-height: 32px !important;
+        font-size: 10px !important;
+      }
+      .cal-task-item {
+        font-size: 9px !important;
+        padding: 3px 4px !important;
+      }
+      .subject-companion-bear {
+        width: 48px !important;
+        height: 48px !important;
+      }
+      .settings-bar-card {
+        padding: 8px 6px;
+      }
+      .settings-bar-hd h2 {
+        font-size: 13px;
+      }
+      .settings-bar-actions {
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .settings-bar-actions .btn {
+        font-size: 10px;
+        padding: 5px 8px;
+      }
+      .install-help {
+        font-size: 10px;
+        line-height: 1.4;
+      }
+      .eyebrow {
+        font-size: 10px !important;
+      }
+      .hero h1 {
+        font-size: 16px !important;
+      }
+      .hero p {
+        font-size: 12px !important;
+      }
+      .plan-header-info {
+        font-size: 11px;
+        gap: 6px;
+      }
+      .plan-encourage {
+        font-size: 11px;
+        padding: 4px 8px;
+      }
+      .plan-review {
+        font-size: 10px;
+        padding: 3px 6px;
+      }
+      .timer {
+        font-size: 28px !important;
+      }
+      .video-frame-wrap {
+        min-height: 160px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      :root { --nav-w: 54px; }
+      .content {
+        padding-right: 4px;
+        padding-left: calc(var(--nav-w) + 4px);
+      }
+      .side-nav { padding-inline: 2px; }
+      .nav-link {
+        font-size: 8px;
+        min-height: 38px;
+        padding: 3px 1px;
+      }
+      .nav-icon {
+        width: 18px;
+        height: 18px;
+      }
+      .brand-bear {
+        width: 22px;
+        height: 18px;
+      }
+      .brand-text {
+        font-size: 7px;
+      }
       .grid { grid-template-columns: 1fr; }
-      .hero { padding-bottom: 112px; }
+      .hero {
+        padding: 10px 8px 70px;
+        border-radius: 14px;
+      }
+      .big-bear {
+        width: 76px !important;
+        height: 76px !important;
+      }
       .grid-3 { grid-template-columns: 1fr; }
+      .card {
+        padding: 8px 6px;
+        border-radius: 14px;
+      }
+      .card h2 {
+        font-size: 13px;
+      }
+      .btn {
+        font-size: 10px;
+        padding: 6px 10px;
+      }
+      .timer-display {
+        font-size: 24px !important;
+      }
+      .timer {
+        font-size: 24px !important;
+      }
+      .plan-task-content {
+        font-size: 10px;
+      }
+      .plan-task-time {
+        font-size: 9px;
+      }
+      .plan-task-subject {
+        font-size: 9px;
+      }
+      .plan-period {
+        font-size: 9px;
+      }
+    }
+
+    /* ====== 手机横屏适配 ====== */
+    @media (max-width: 920px) and (orientation: landscape) and (max-height: 480px) {
+      .hero {
+        padding: 10px 12px 60px;
+        min-height: auto !important;
+      }
+      .big-bear {
+        width: 72px !important;
+        height: 72px !important;
+      }
+      .speech {
+        bottom: 30px !important;
+        max-width: 120px !important;
+      }
+      .grid {
+        gap: 8px;
+      }
+      .card {
+        padding: 8px 10px;
+      }
+      .timer-display {
+        font-size: 28px !important;
+      }
     }
 
     @media (min-width: 760px) {
@@ -3249,7 +3592,7 @@
           } catch (e) {
             console.warn("云端同步失败:", e);
           }
-        }, 3000);
+        }, 2000);
       }
 
       function cloudLoadState() {
@@ -3285,10 +3628,129 @@
         var cloudTotal = Number(cloudData.subjectTotals.western || 0) + Number(cloudData.subjectTotals.english || 0) + Number(cloudData.subjectTotals.politics || 0);
         var localTime = localState.updatedAt ? new Date(localState.updatedAt).getTime() : 0;
         var cloudTime = cloudData.updatedAt ? new Date(cloudData.updatedAt).getTime() : 0;
-        if (cloudTotal > localTotal || (cloudTotal === localTotal && cloudTime > localTime)) {
-          return normalize(cloudData);
+        
+        // 智能合并：取两边各自更大的值，而不是简单覆盖
+        var merged = JSON.parse(JSON.stringify(localState));
+        
+        // 合并科目总时长（取较大值）
+        if (cloudData.subjectTotals) {
+          if (!merged.subjectTotals) merged.subjectTotals = {};
+          ['western', 'english', 'politics'].forEach(function(key) {
+            var cloudVal = Number(cloudData.subjectTotals[key] || 0);
+            var localVal = Number(merged.subjectTotals[key] || 0);
+            if (cloudVal > localVal) merged.subjectTotals[key] = cloudVal;
+          });
         }
-        return localState;
+        
+        // 合并打卡记录（取并集）
+        if (cloudData.planTaskDone) {
+          if (!merged.planTaskDone) merged.planTaskDone = {};
+          Object.keys(cloudData.planTaskDone).forEach(function(key) {
+            if (cloudData.planTaskDone[key] && !merged.planTaskDone[key]) {
+              merged.planTaskDone[key] = cloudData.planTaskDone[key];
+            }
+          });
+        }
+        
+        // 合并顺延记录（取并集，保留各自的 delayCount 最大值）
+        if (cloudData.planTaskMoves) {
+          if (!merged.planTaskMoves) merged.planTaskMoves = {};
+          Object.keys(cloudData.planTaskMoves).forEach(function(key) {
+            var cloudMove = cloudData.planTaskMoves[key];
+            var localMove = merged.planTaskMoves[key];
+            if (!localMove) {
+              merged.planTaskMoves[key] = cloudMove;
+            } else if (cloudMove && localMove) {
+              // 取更大的 delayCount
+              if ((cloudMove.delayCount || 0) > (localMove.delayCount || 0)) {
+                merged.planTaskMoves[key] = cloudMove;
+              }
+            }
+          });
+        }
+        
+        // 合并 lastAutoPlanDate（取较晚的日期，避免重复顺延）
+        if (cloudData.lastAutoPlanDate) {
+          if (!merged.lastAutoPlanDate || cloudData.lastAutoPlanDate > merged.lastAutoPlanDate) {
+            merged.lastAutoPlanDate = cloudData.lastAutoPlanDate;
+          }
+        }
+        
+        // 合并学习心得
+        if (cloudData.planNotes) {
+          if (!merged.planNotes) merged.planNotes = {};
+          Object.keys(cloudData.planNotes).forEach(function(dayKey) {
+            if (!merged.planNotes[dayKey]) {
+              merged.planNotes[dayKey] = cloudData.planNotes[dayKey];
+            }
+          });
+        }
+        
+        // 合并每日汇总
+        if (cloudData.dailySummaries) {
+          if (!merged.dailySummaries) merged.dailySummaries = {};
+          Object.keys(cloudData.dailySummaries).forEach(function(dayKey) {
+            if (!merged.dailySummaries[dayKey]) {
+              merged.dailySummaries[dayKey] = cloudData.dailySummaries[dayKey];
+            }
+          });
+        }
+        
+        // 合并计时会话
+        if (cloudData.timerSessions) {
+          if (!merged.timerSessions) merged.timerSessions = [];
+          var existingIds = {};
+          merged.timerSessions.forEach(function(s) { if (s.id) existingIds[s.id] = true; });
+          cloudData.timerSessions.forEach(function(s) {
+            if (s.id && !existingIds[s.id]) merged.timerSessions.push(s);
+          });
+        }
+        
+        // 合并计时总时长
+        if (cloudData.taskTotals) {
+          if (!merged.taskTotals) merged.taskTotals = {};
+          Object.keys(cloudData.taskTotals).forEach(function(key) {
+            var cloudVal = Number(cloudData.taskTotals[key].total || 0);
+            var localVal = merged.taskTotals[key] ? Number(merged.taskTotals[key].total || 0) : 0;
+            if (cloudVal > localVal) merged.taskTotals[key] = cloudData.taskTotals[key];
+          });
+        }
+        
+        // 合并每日记录（dailyRecords）
+        if (cloudData.dailyRecords) {
+          if (!merged.dailyRecords) merged.dailyRecords = {};
+          Object.keys(cloudData.dailyRecords).forEach(function(dayKey) {
+            if (!merged.dailyRecords[dayKey]) {
+              merged.dailyRecords[dayKey] = cloudData.dailyRecords[dayKey];
+            }
+          });
+        }
+        
+        // 合并分类记录（categoryRecords）
+        if (cloudData.categoryRecords) {
+          if (!merged.categoryRecords) merged.categoryRecords = {};
+          Object.keys(cloudData.categoryRecords).forEach(function(catKey) {
+            if (!merged.categoryRecords[catKey]) {
+              merged.categoryRecords[catKey] = cloudData.categoryRecords[catKey];
+            }
+          });
+        }
+        
+        // 合并分类总时长（categoryTotals，取较大值）
+        if (cloudData.categoryTotals) {
+          if (!merged.categoryTotals) merged.categoryTotals = {};
+          Object.keys(cloudData.categoryTotals).forEach(function(key) {
+            var cloudVal = Number(cloudData.categoryTotals[key] || 0);
+            var localVal = Number(merged.categoryTotals[key] || 0);
+            if (cloudVal > localVal) merged.categoryTotals[key] = cloudVal;
+          });
+        }
+        
+        // 更新时间戳
+        merged.updatedAt = new Date().toISOString();
+        
+        // 不再简单地用云端覆盖本地，保留智能合并结果
+        return merged;
       }
 
       function updateCloudSyncBadge() {
@@ -5597,6 +6059,73 @@
         return appState.planTaskMoves;
       }
 
+      // 清理旧计划版本遗留的顺延记录
+      function cleanupStaleMoves() {
+        var moves = getPlanTaskMoves();
+        var ids = Object.keys(moves);
+        var removed = 0;
+        for (var i = 0; i < ids.length; i++) {
+          var move = moves[ids[i]];
+          if (!move || !move.originalDate) continue;
+          // 查找原始日期的计划
+          var origDate = new Date(move.originalDate + "T00:00:00");
+          var dailyPlan = getDetailedPlanForDate(origDate);
+          if (!dailyPlan || !Array.isArray(dailyPlan.tasks)) {
+            // 原始日期不在当前计划中，删除该顺延记录
+            delete moves[ids[i]];
+            removed++;
+            continue;
+          }
+          // 检查是否有匹配的任务（subject+duration+content）
+          var found = false;
+          for (var j = 0; j < dailyPlan.tasks.length; j++) {
+            var t = dailyPlan.tasks[j];
+            if (t.subject === move.subject && t.duration === move.duration && t.content === move.content) {
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            delete moves[ids[i]];
+            removed++;
+          }
+        }
+        // 同时清理旧的 planTaskDone 记录中不再匹配的任务
+        var done = appState.planTaskDone || {};
+        var doneIds = Object.keys(done);
+        var doneRemoved = 0;
+        for (var k = 0; k < doneIds.length; k++) {
+          var doneId = doneIds[k];
+          var parts = doneId.split("|");
+          if (parts.length < 6) continue;
+          var doneDate = parts[0];
+          var doneSubject = parts[3];
+          var doneDuration = parts[4];
+          var doneContent = parts.slice(5).join("|");
+          var dDate = new Date(doneDate + "T00:00:00");
+          var dPlan = getDetailedPlanForDate(dDate);
+          if (!dPlan || !Array.isArray(dPlan.tasks)) continue;
+          var matchFound = false;
+          for (var m = 0; m < dPlan.tasks.length; m++) {
+            var dt = dPlan.tasks[m];
+            if (dt.subject === doneSubject && dt.duration === doneDuration && dt.content === doneContent) {
+              matchFound = true;
+              break;
+            }
+          }
+          if (!matchFound) {
+            delete done[doneId];
+            doneRemoved++;
+          }
+        }
+        if (removed > 0 || doneRemoved > 0) {
+          appState.planTaskMoves = moves;
+          appState.planTaskDone = done;
+          saveState();
+          console.log("清理旧计划数据：移除" + removed + "条顺延记录，" + doneRemoved + "条打卡记录");
+        }
+      }
+
       var MAX_TASK_DELAY = 3;
 
       function createDelayedMove(task, fromKey, delayCount) {
@@ -5621,6 +6150,10 @@
         }
         var cursor = appState.lastAutoPlanDate;
         if (cursor >= today) return;
+        // 不要顺延计划开始日期之前的任务
+        var planStart = makeLocalDate('2026-08-02');
+        var planStartKey = planStart.getFullYear() + '-' + String(planStart.getMonth() + 1).padStart(2, '0') + '-' + String(planStart.getDate()).padStart(2, '0');
+        if (cursor < planStartKey) cursor = planStartKey;
         var moves = getPlanTaskMoves();
         var done = appState.planTaskDone || {};
         var changed = false;
@@ -6926,6 +7459,8 @@
                   note: "用户JSON备份恢复，保留备份中的心得、细分类和时长"
                 };
               }
+              // 清理旧计划版本遗留的顺延和打卡记录
+              try { cleanupStaleMoves(); } catch (e) {}
               saveState();
               render();
               showToast("导入成功。熊：记录回来了。");
@@ -7034,7 +7569,29 @@
         });
 
         document.addEventListener("visibilitychange", function () {
-          if (document.visibilityState === "hidden") saveState();
+          if (document.visibilityState === "hidden") {
+            saveState();
+            // 离开页面时推送到云端
+            cloudSaveState(appState);
+          } else if (document.visibilityState === "visible") {
+            // 返回页面时从云端拉取最新数据
+            cloudLoadState().then(function (cloudData) {
+              if (cloudData && cloudData.subjectTotals) {
+                var merged = mergeCloudData(appState, cloudData);
+                if (merged !== appState) {
+                  appState = merged;
+                  try { cleanupStaleMoves(); } catch (e) {}
+                  try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+                    localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(appState));
+                  } catch (e) {}
+                  render();
+                  cloudLastSync = Date.now();
+                  updateCloudSyncBadge();
+                }
+              }
+            });
+          }
         });
 
         $("diagTestBtn").addEventListener("click", runDiagTest);
@@ -7241,6 +7798,8 @@
           if (merged !== appState) {
             appState = merged;
             applyTomatodoImport();
+            // 清理旧计划版本遗留的顺延记录
+            try { cleanupStaleMoves(); } catch (e) {}
             try {
               localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
               localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(appState));
@@ -7253,6 +7812,8 @@
           }
           cloudLastSync = Date.now();
           updateCloudSyncBadge();
+          // 同步后推送到云端（确保其他设备也能获取最新合并数据）
+          cloudSaveState(appState);
         }
       });
 
@@ -7264,10 +7825,40 @@
         updateHomeDateTime();
       }, 1000);
 
+      // 定期从云端拉取数据（每30秒），确保多设备同步
+      setInterval(function () {
+        if (document.visibilityState === "visible") {
+          cloudLoadState().then(function (cloudData) {
+            if (cloudData && cloudData.subjectTotals) {
+              var cloudTime = cloudData.updatedAt ? new Date(cloudData.updatedAt).getTime() : 0;
+              var localTime = appState.updatedAt ? new Date(appState.updatedAt).getTime() : 0;
+              // 只在云端有更新的数据时合并
+              if (cloudTime > localTime) {
+                var merged = mergeCloudData(appState, cloudData);
+                if (merged !== appState) {
+                  appState = merged;
+                  try { cleanupStaleMoves(); } catch (e) {}
+                  try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+                    localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(appState));
+                  } catch (e) {}
+                  render();
+                  cloudLastSync = Date.now();
+                  updateCloudSyncBadge();
+                }
+              }
+            }
+          });
+        }
+      }, 30000);
+
       bindEvents();
 
+      // 启动时清理旧计划版本遗留的顺延记录
+      try { cleanupStaleMoves(); } catch (e) {}
+
       if ("serviceWorker" in navigator) {
-        var APP_VERSION = "v98-20260805";
+        var APP_VERSION = "v99-20260806";
         var refreshing = false;
 
         navigator.serviceWorker.addEventListener("controllerchange", function () {

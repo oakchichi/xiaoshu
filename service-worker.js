@@ -1,4 +1,4 @@
-var CACHE_NAME = "xiaoshu-kaoyan-buddy-v98";
+var CACHE_NAME = "xiaoshu-kaoyan-buddy-v99";
 var ASSETS = [
   "./",
   "./index.html",
