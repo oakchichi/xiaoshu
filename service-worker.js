@@ -1,12 +1,30 @@
-var CACHE_NAME = "xiaoshu-kaoyan-buddy-v99";
-var ASSETS = [
+var CACHE_NAME = "xiaoshu-kaoyan-buddy-v100";
+
+// 核心资源：安装时立即缓存（体积小，首屏必需）
+var CRITICAL_ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
   "./assets/bear-study.gif",
-  "./assets/bear-flower.jpg",
-  "./assets/bear-lie.gif",
   "./assets/bear-cheer.gif",
+  "./assets/bear-flower.jpg",
+  "./assets/bear-flower-latest.jpg",
+  "./assets/nav-icons/nav-home.png",
+  "./assets/nav-icons/nav-western.png",
+  "./assets/nav-icons/nav-english.png",
+  "./assets/nav-icons/nav-politics.png",
+  "./assets/nav-icons/nav-stats.png",
+  "./assets/nav-icons/nav-leisure.png",
+  "./assets/nav-icons/nav-settings.png",
+  "./assets/new-bears/bear-new-07.gif",
+  "./assets/tomatodo-import-v61.js",
+  "./assets/study-plan-v81.js",
+  "./assets/leisure-materials.js"
+];
+
+// 非核心资源：安装后后台缓存（体积大，非首屏必需）
+var LAZY_ASSETS = [
+  "./assets/bear-lie.gif",
   "./assets/bear-persist.gif",
   "./assets/bear-lazy.gif",
   "./assets/bear-breakdown.gif",
@@ -14,7 +32,6 @@ var ASSETS = [
   "./assets/bear-panic.gif",
   "./assets/bear-shine.gif",
   "./assets/bear-flower-2.jpg",
-  "./assets/bear-flower-latest.jpg",
   "./assets/bear-mask.gif",
   "./assets/bear-read.gif",
   "./assets/quote-bear-01.gif",
@@ -54,36 +71,20 @@ var ASSETS = [
   "./assets/new-bears/bear-new-04.gif",
   "./assets/new-bears/bear-new-05.gif",
   "./assets/new-bears/bear-new-06.gif",
-  "./assets/new-bears/bear-new-07.gif",
   "./assets/new-bears/bear-new-08.gif",
   "./assets/new-bears/bear-new-09.gif",
   "./assets/new-bears/bear-new-10.gif",
-  "./assets/new-bears/bear-new-11.gif",
-  "./assets/nav-icons/nav-home.png",
-  "./assets/nav-icons/nav-western.png",
-  "./assets/nav-icons/nav-english.png",
-  "./assets/nav-icons/nav-politics.png",
-  "./assets/nav-icons/nav-leisure.png",
-  "./assets/nav-icons/nav-stats.png",
-  "./assets/nav-icons/nav-settings.png",
-  "./assets/nav-icons/source.png",
-  "./assets/tomatodo-import-v61.js",
-  "./assets/study-plan-v81.js",
-  "./assets/leisure-materials.js",
-  "./assets/study-plan-v79.js",
-  "./assets/tomatodo-import-v56.js",
-  "./assets/tomatodo-import-v59.js"
+  "./assets/new-bears/bear-new-11.gif"
 ];
 
-// 安装时预缓存所有资源
+// 安装时只缓存核心资源，不阻塞
 self.addEventListener("install", function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
-      // 逐个缓存，即使部分失败也不阻塞
       return Promise.allSettled(
-        ASSETS.map(function(asset) {
+        CRITICAL_ASSETS.map(function(asset) {
           return cache.add(asset).catch(function(err) {
-            console.warn("缓存失败:", asset, err.message);
+            console.warn("核心缓存失败:", asset, err.message);
           });
         })
       );
@@ -98,7 +99,7 @@ self.addEventListener("message", function(event) {
   }
 });
 
-// 激活时清除旧缓存并重新预热
+// 激活时清除旧缓存，后台预热非核心资源
 self.addEventListener("activate", function(event) {
   event.waitUntil(
     caches.keys().then(function(keys) {
@@ -110,26 +111,23 @@ self.addEventListener("activate", function(event) {
         })
       );
     }).then(function() {
-      // 激活后立即预热缓存，防止资源丢失
-      return caches.open(CACHE_NAME).then(function(cache) {
-        return Promise.allSettled(
-          ASSETS.map(function(asset) {
-            return cache.match(asset).then(function(cached) {
-              if (!cached) {
-                return fetch(asset).then(function(resp) {
-                  if (resp && resp.status === 200) {
-                    return cache.put(asset, resp.clone());
-                  }
-                }).catch(function() {});
-              }
-              return cached;
-            }).catch(function() {});
-          })
-        );
+      self.clients.claim();
+      // 后台预热非核心资源（不阻塞激活）
+      caches.open(CACHE_NAME).then(function(cache) {
+        LAZY_ASSETS.forEach(function(asset) {
+          cache.match(asset).then(function(cached) {
+            if (!cached) {
+              fetch(asset).then(function(resp) {
+                if (resp && resp.status === 200) {
+                  cache.put(asset, resp.clone());
+                }
+              }).catch(function() {});
+            }
+          }).catch(function() {});
+        });
       });
     })
   );
-  self.clients.claim();
 });
 
 // 判断是否为静态资源
@@ -179,7 +177,6 @@ self.addEventListener("fetch", function(event) {
   }
 
   // 静态资源：cache-first（优先用缓存，缓存没有才请求网络）
-  // 这样即使断网或浏览器清理了部分缓存，已缓存的资源也不会丢失
   if (isSameOrigin && isStaticAsset(url)) {
     event.respondWith(
       caches.match(event.request).then(function(cached) {
@@ -204,7 +201,6 @@ self.addEventListener("fetch", function(event) {
           }
           return response;
         }).catch(function() {
-          // 网络也失败，返回空响应避免崩溃
           return new Response("", { status: 504, statusText: "Offline" });
         });
       })

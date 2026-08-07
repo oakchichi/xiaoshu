@@ -317,6 +317,7 @@
       height: 110px;
       border-radius: 22px;
       background: url("./assets/bear-study.gif") center / contain no-repeat;
+      background-color: rgba(143, 207, 227, 0.12);
       filter: drop-shadow(0 14px 14px rgba(17, 17, 17, 0.10));
     }
 
@@ -3131,13 +3132,13 @@
         <div class="brand-bear"></div>
         <div class="brand-text">小树<br>加油</div>
       </a>
-      <a class="nav-link nav-go active" href="#home" data-screen="home"><img class="nav-icon" src="./assets/nav-icons/nav-home.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />首页</a>
-      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="western"><img class="nav-icon" src="./assets/nav-icons/nav-western.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />西综</a>
-      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="english"><img class="nav-icon" src="./assets/nav-icons/nav-english.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />英语</a>
-      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="politics"><img class="nav-icon" src="./assets/nav-icons/nav-politics.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />政治</a>
-      <a class="nav-link nav-go" href="#stats" data-screen="stats"><img class="nav-icon" src="./assets/nav-icons/nav-stats.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />统计</a>
-      <a class="nav-link nav-go" href="#leisure" data-screen="leisure"><img class="nav-icon" src="./assets/nav-icons/nav-leisure.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />休闲</a>
-      <a class="nav-link nav-go" href="#settings" data-screen="settings"><img class="nav-icon" src="./assets/nav-icons/nav-settings.png" alt="" onerror="this.style.display='none';this.parentElement.style.fontSize='20px';" />设置</a>
+      <a class="nav-link nav-go active" href="#home" data-screen="home"><img class="nav-icon" src="./assets/nav-icons/nav-home.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />首页</a>
+      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="western"><img class="nav-icon" src="./assets/nav-icons/nav-western.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />西综</a>
+      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="english"><img class="nav-icon" src="./assets/nav-icons/nav-english.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />英语</a>
+      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="politics"><img class="nav-icon" src="./assets/nav-icons/nav-politics.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />政治</a>
+      <a class="nav-link nav-go" href="#stats" data-screen="stats"><img class="nav-icon" src="./assets/nav-icons/nav-stats.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />统计</a>
+      <a class="nav-link nav-go" href="#leisure" data-screen="leisure"><img class="nav-icon" src="./assets/nav-icons/nav-leisure.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />休闲</a>
+      <a class="nav-link nav-go" href="#settings" data-screen="settings"><img class="nav-icon" src="./assets/nav-icons/nav-settings.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />设置</a>
     </nav>
 
     <main class="content">
@@ -3156,7 +3157,7 @@
           </div>
 
           <article class="card bear-quote-card">
-            <img class="bear-quote-img" id="homeQuoteBear" src="./assets/bear-cheer.gif" alt="今日熊言自嘲熊" />
+            <img class="bear-quote-img" id="homeQuoteBear" src="./assets/bear-cheer.gif" alt="今日熊言自嘲熊" onerror="this.onerror=null;this.src='./assets/bear-study.gif';" />
             <div>
               <h2>今日熊言</h2>
               <div class="bear-quote-text" id="homeBearQuote">今天先完成一小步，熊就离目标更近一步</div>
@@ -3516,7 +3517,7 @@
   </div>
   <div class="quote-spotlight" id="quoteSpotlight" aria-hidden="true">
     <div class="quote-spotlight-card">
-      <img class="quote-spotlight-img" id="quoteSpotlightBear" src="./assets/bear-cheer.gif" alt="放大的今日熊言自嘲熊" />
+      <img class="quote-spotlight-img" id="quoteSpotlightBear" src="./assets/bear-cheer.gif" alt="放大的今日熊言自嘲熊" onerror="this.onerror=null;this.src='./assets/bear-study.gif';" />
       <div>
         <div class="quote-spotlight-kicker">今日熊言</div>
         <div class="quote-spotlight-text" id="quoteSpotlightText">今天先完成一小步，熊就离目标更近一步</div>
@@ -6303,7 +6304,7 @@
           }
         }
         if (!matched) {
-          tasksHtml = '<div class="empty-state"><img class="empty-bear" src="' + BEAR_POSES.lie + '" alt="瘫坐自嘲熊">今天这个科目没有硬性安排。熊：可以补错题，或者快乐喘口气。</div>';
+          tasksHtml = '<div class="empty-state"><img class="empty-bear" src="' + BEAR_POSES.lie + '" alt="瘫坐自嘲熊" onerror="this.onerror=null;this.src=\'' + BEAR_POSES.study + '\';">今天这个科目没有硬性安排。熊：可以补错题，或者快乐喘口气。</div>';
         }
         return tasksHtml;
       }
@@ -7539,7 +7540,7 @@
               return reg.update().then(function () {
                 return caches.keys().then(function (keys) {
                   return Promise.all(keys.filter(function (k) {
-                    return k.indexOf("xiaoshu-kaoyan-buddy") !== -1 && k !== "xiaoshu-kaoyan-buddy-v98";
+                    return k.indexOf("xiaoshu-kaoyan-buddy") !== -1;
                   }).map(function (k) { return caches.delete(k); }));
                 });
               }).then(function () {
@@ -7858,7 +7859,7 @@
       try { cleanupStaleMoves(); } catch (e) {}
 
       if ("serviceWorker" in navigator) {
-        var APP_VERSION = "v99-20260806";
+        var APP_VERSION = "v100-20260807";
         var refreshing = false;
 
         navigator.serviceWorker.addEventListener("controllerchange", function () {
@@ -7895,7 +7896,7 @@
         }
 
         window.addEventListener("load", function () {
-          navigator.serviceWorker.register("./service-worker.js?v=98").then(function (reg) {
+          navigator.serviceWorker.register("./service-worker.js?v=100").then(function (reg) {
             reg.addEventListener("updatefound", function () {
               var newWorker = reg.installing;
               if (newWorker) {
@@ -7919,7 +7920,7 @@
           // ====== 自愈机制：检查并重新缓存缺失的资源 ======
           // 浏览器可能在长时间不使用后清理部分缓存，导致图标/图片消失
           // 每次打开时检查关键资源是否在缓存中，缺失则重新获取并缓存
-          var CRITICAL_ASSETS = [
+          var HEAL_ASSETS = [
             "./assets/nav-icons/nav-home.png",
             "./assets/nav-icons/nav-western.png",
             "./assets/nav-icons/nav-english.png",
@@ -7930,34 +7931,25 @@
             "./assets/bear-study.gif",
             "./assets/bear-cheer.gif",
             "./assets/bear-flower.jpg",
-            "./assets/bear-persist.gif",
-            "./assets/bear-shine.gif",
-            "./assets/new-bears/bear-new-01.gif",
-            "./assets/new-bears/bear-new-02.gif",
-            "./assets/new-bears/bear-new-03.gif",
-            "./assets/new-bears/bear-new-04.gif",
-            "./assets/new-bears/bear-new-05.gif",
-            "./assets/new-bears/bear-new-06.gif",
-            "./assets/new-bears/bear-new-07.gif",
-            "./assets/new-bears/bear-new-08.gif",
-            "./assets/new-bears/bear-new-09.gif",
-            "./assets/new-bears/bear-new-10.gif",
-            "./assets/new-bears/bear-new-11.gif"
+            "./assets/bear-flower-latest.jpg",
+            "./assets/new-bears/bear-new-07.gif"
           ];
-          if (caches && caches.open) {
-            caches.open("xiaoshu-kaoyan-buddy-v98").then(function(cache) {
-              CRITICAL_ASSETS.forEach(function(asset) {
-                cache.match(asset).then(function(cached) {
-                  if (!cached) {
-                    // 缓存中缺失，从网络重新获取并缓存
-                    fetch(asset).then(function(resp) {
-                      if (resp && resp.status === 200) {
-                        cache.put(asset, resp.clone());
-                      }
-                    }).catch(function() {});
-                  }
-                }).catch(function() {});
-              });
+          if (caches && caches.keys && caches.open) {
+            caches.keys().then(function(keys) {
+              var latestCache = keys.length ? keys[keys.length - 1] : "xiaoshu-kaoyan-buddy-v100";
+              caches.open(latestCache).then(function(cache) {
+                HEAL_ASSETS.forEach(function(asset) {
+                  cache.match(asset).then(function(cached) {
+                    if (!cached) {
+                      fetch(asset).then(function(resp) {
+                        if (resp && resp.status === 200) {
+                          cache.put(asset, resp.clone());
+                        }
+                      }).catch(function() {});
+                    }
+                  }).catch(function() {});
+                });
+              }).catch(function() {});
             }).catch(function() {});
           }
         });

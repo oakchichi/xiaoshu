@@ -5,7 +5,7 @@
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#F8FBFF",
   "theme_color": "#5b91bf",
   "icons": [
@@ -20,6 +20,12 @@
       "sizes": "550x550",
       "type": "image/gif",
       "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/bear-flower-latest.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
     }
   ]
 }
