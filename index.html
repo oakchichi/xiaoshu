@@ -631,7 +631,10 @@
       object-fit: contain;
       border-radius: 20px;
       background: rgba(255, 255, 255, 0.58);
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
+    .bear-quote-img.loaded { opacity: 1; }
 
     .bear-quote-card > div {
       min-width: 0;
@@ -1131,7 +1134,10 @@
       border-radius: 14px;
       background: rgba(255, 255, 255, 0.56);
       filter: drop-shadow(0 8px 10px rgba(17, 17, 17, 0.08));
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
+    .timer-bear.loaded { opacity: 1; }
 
     .timer {
       margin: 14px 0;
@@ -1817,7 +1823,10 @@
       border-radius: 18px;
       background: rgba(255,255,255,.62);
       filter: drop-shadow(0 10px 12px rgba(17,17,17,.08));
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
+    .subject-companion-bear.loaded { opacity: 1; }
     .subject-companion-title {
       font-size: 17px;
       font-weight: 950;
@@ -1947,7 +1956,10 @@
       object-fit: contain;
       border-radius: 28px;
       background: linear-gradient(145deg, rgba(220, 238, 255, 0.7), rgba(255, 247, 230, 0.72));
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
+    .quote-spotlight-img.loaded { opacity: 1; }
 
     .quote-spotlight-kicker {
       font-size: 14px;
@@ -3157,7 +3169,7 @@
           </div>
 
           <article class="card bear-quote-card">
-            <img class="bear-quote-img" id="homeQuoteBear" src="./assets/bear-cheer.gif" alt="今日熊言自嘲熊" onerror="this.onerror=null;this.src='./assets/bear-study.gif';" />
+            <img class="bear-quote-img" id="homeQuoteBear" src="" alt="今日熊言自嘲熊" onload="this.classList.add('loaded')" />
             <div>
               <h2>今日熊言</h2>
               <div class="bear-quote-text" id="homeBearQuote">今天先完成一小步，熊就离目标更近一步</div>
@@ -3216,7 +3228,7 @@
         <article class="card timer-card">
           <div class="subject-head" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
             <div class="subject-title-inline">
-              <img class="timer-bear" id="timerBear" src="./assets/bear-cheer.gif" alt="科目自嘲熊" onerror="this.onerror=null;this.src='./assets/bear-study.gif';" />
+              <img class="timer-bear" id="timerBear" src="" alt="科目自嘲熊" onload="this.classList.add('loaded')" />
               <h2 id="activeSubjectName" style="margin-bottom:0;">西综</h2>
             </div>
             <span class="pill" id="timerState" style="display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:0 10px;border-radius:999px;color:var(--accent-deep);background:var(--bg2);font-size:12px;font-weight:900;">未开始</span>
@@ -3251,7 +3263,7 @@
 
         <article class="card subject-companion-card">
           <div class="subject-companion-top">
-            <img class="subject-companion-bear" id="subjectCompanionBear" src="./assets/bear-cheer.gif" alt="陪学小熊" onerror="this.onerror=null;this.src='./assets/bear-study.gif';" />
+            <img class="subject-companion-bear" id="subjectCompanionBear" src="" alt="陪学小熊" onload="this.classList.add('loaded')" />
             <div>
               <div class="subject-companion-title" id="subjectCompanionTitle">今日小熊陪学</div>
               <div class="subject-companion-desc" id="subjectCompanionDesc">小熊在旁边，陪你把这一科稳稳拿下。</div>
@@ -3517,7 +3529,7 @@
   </div>
   <div class="quote-spotlight" id="quoteSpotlight" aria-hidden="true">
     <div class="quote-spotlight-card">
-      <img class="quote-spotlight-img" id="quoteSpotlightBear" src="./assets/bear-cheer.gif" alt="放大的今日熊言自嘲熊" onerror="this.onerror=null;this.src='./assets/bear-study.gif';" />
+      <img class="quote-spotlight-img" id="quoteSpotlightBear" src="" alt="放大的今日熊言自嘲熊" onload="this.classList.add('loaded')" />
       <div>
         <div class="quote-spotlight-kicker">今日熊言</div>
         <div class="quote-spotlight-text" id="quoteSpotlightText">今天先完成一小步，熊就离目标更近一步</div>
@@ -5068,9 +5080,11 @@
         appState.homeQuoteIndex = index % quotes.length;
         $("homeBearQuote").textContent = quote.text;
         var bearImg = $("homeQuoteBear");
+        bearImg.classList.remove("loaded");
         bearImg.onerror = function () {
           this.onerror = null;
           this.src = BEAR_POSES.study;
+          this.classList.add("loaded");
         };
         bearImg.src = BEAR_POSES[quote.pose] || BEAR_POSES.cheer;
       }
@@ -5082,9 +5096,11 @@
         var quote = quotes[index % quotes.length];
         $("quoteSpotlightText").textContent = quote.text;
         var spotlightBear = $("quoteSpotlightBear");
+        spotlightBear.classList.remove("loaded");
         spotlightBear.onerror = function () {
           this.onerror = null;
           this.src = BEAR_POSES.study;
+          this.classList.add("loaded");
         };
         spotlightBear.src = BEAR_POSES[quote.pose] || BEAR_POSES.cheer;
         var spotlight = $("quoteSpotlight");
@@ -5883,7 +5899,16 @@
           $("toggleTimerBtn").textContent = "开始计时";
           $("endTimerBtn").disabled = true;
         }
-        $("timerBear").src = SUBJECT_BEARS[activeSubject] || BEAR_POSES.persist;
+        var timerBear = $("timerBear");
+        if (timerBear) {
+          timerBear.classList.remove("loaded");
+          timerBear.onerror = function () {
+            this.onerror = null;
+            this.src = BEAR_POSES.study;
+            this.classList.add("loaded");
+          };
+          timerBear.src = SUBJECT_BEARS[activeSubject] || BEAR_POSES.persist;
+        }
 
         $("subjectTotalTime").textContent = formatTime(Number(appState.subjectTotals[activeSubject] || 0) + activeElapsed);
         $("subjectTodayTime").textContent = formatTime(subjectTotalToday(activeSubject) + activeElapsed);
@@ -5905,7 +5930,16 @@
         } else if (today <= 0) {
           bearSrc = SUBJECT_BEARS[activeSubject] || BEAR_POSES.cheer;
         }
-        if ($("subjectCompanionBear")) $("subjectCompanionBear").src = bearSrc;
+        var companionBear = $("subjectCompanionBear");
+        if (companionBear) {
+          companionBear.classList.remove("loaded");
+          companionBear.onerror = function () {
+            this.onerror = null;
+            this.src = BEAR_POSES.study;
+            this.classList.add("loaded");
+          };
+          companionBear.src = bearSrc;
+        }
         if ($("subjectCompanionTitle")) $("subjectCompanionTitle").textContent = subject + "陪学小熊";
         if ($("subjectCompanionDesc")) $("subjectCompanionDesc").textContent = "小熊搬来小板凳，今天就坐在你旁边啦。";
         if ($("subjectCompanionToday")) $("subjectCompanionToday").textContent = formatTime(today);
@@ -7859,7 +7893,7 @@
       try { cleanupStaleMoves(); } catch (e) {}
 
       if ("serviceWorker" in navigator) {
-        var APP_VERSION = "v100-20260807";
+        var APP_VERSION = "v101-20260807";
         var refreshing = false;
 
         navigator.serviceWorker.addEventListener("controllerchange", function () {
@@ -7896,7 +7930,7 @@
         }
 
         window.addEventListener("load", function () {
-          navigator.serviceWorker.register("./service-worker.js?v=100").then(function (reg) {
+          navigator.serviceWorker.register("./service-worker.js?v=101").then(function (reg) {
             reg.addEventListener("updatefound", function () {
               var newWorker = reg.installing;
               if (newWorker) {
@@ -7936,7 +7970,7 @@
           ];
           if (caches && caches.keys && caches.open) {
             caches.keys().then(function(keys) {
-              var latestCache = keys.length ? keys[keys.length - 1] : "xiaoshu-kaoyan-buddy-v100";
+              var latestCache = keys.length ? keys[keys.length - 1] : "xiaoshu-kaoyan-buddy-v101";
               caches.open(latestCache).then(function(cache) {
                 HEAL_ASSETS.forEach(function(asset) {
                   cache.match(asset).then(function(cached) {
