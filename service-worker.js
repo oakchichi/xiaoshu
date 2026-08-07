@@ -1,6 +1,6 @@
-var CACHE_NAME = "xiaoshu-kaoyan-buddy-v103";
+var CACHE_NAME = "xiaoshu-kaoyan-buddy-v104";
 
-// 核心资源：安装时立即缓存（体积小，首屏必需）
+// 核心资源：安装时立即缓存（首屏必需，体积控制在最小）
 var CRITICAL_ASSETS = [
   "./",
   "./index.html",
@@ -24,7 +24,7 @@ var CRITICAL_ASSETS = [
   "./assets/leisure-materials.js"
 ];
 
-// 非核心资源：安装后后台缓存（体积大，非首屏必需）
+// 非核心资源：安装后后台缓存（体积大，按需加载）
 var LAZY_ASSETS = [
   "./assets/bear-lie.gif",
   "./assets/bear-lazy.gif",
@@ -51,13 +51,11 @@ var LAZY_ASSETS = [
   "./assets/quote-bear-15.gif",
   "./assets/quote-bear-16.gif",
   "./assets/quote-extras/quote-extra-01.gif",
-  "./assets/quote-extras/quote-extra-02.gif",
   "./assets/quote-extras/quote-extra-03.gif",
   "./assets/quote-extras/quote-extra-04.gif",
   "./assets/quote-extras/quote-extra-05.gif",
   "./assets/quote-extras/quote-extra-06.gif",
   "./assets/quote-extras/quote-extra-07.gif",
-  "./assets/quote-extras/quote-extra-08.gif",
   "./assets/quote-extras/quote-extra-09.gif",
   "./assets/quote-extras/quote-extra-10.gif",
   "./assets/quote-extras/quote-extra-11.gif",
@@ -71,7 +69,6 @@ var LAZY_ASSETS = [
   "./assets/new-bears/bear-new-04.gif",
   "./assets/new-bears/bear-new-05.gif",
   "./assets/new-bears/bear-new-06.gif",
-  "./assets/new-bears/bear-new-08.gif",
   "./assets/new-bears/bear-new-09.gif",
   "./assets/new-bears/bear-new-10.gif",
   "./assets/new-bears/bear-new-11.gif"

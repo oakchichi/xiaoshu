@@ -9,14 +9,14 @@
 - `service-worker.js`：离线缓存脚本，让网页安装后可离线打开。
 - `assets/bear-lie.gif`、`assets/bear-cheer.gif`、`assets/bear-persist.gif`、`assets/bear-lazy.gif`、`assets/bear-breakdown.gif`：页面直接使用的核心自嘲熊姿势素材，分别用于瘫、加油、坚持、摆烂、崩溃等状态。
 - `assets/bear-study.gif`、`assets/bear-hula.gif`、`assets/bear-panic.gif`、`assets/bear-read.gif`、`assets/bear-shine.gif`、`assets/bear-mask.gif`、`assets/bear-flower.jpg`、`assets/bear-flower-2.jpg`、`assets/bear-flower-latest.jpg`：备用装饰熊素材和历史保留图标。
-- `assets/tomatodo-import-v56.js`、`assets/tomatodo-import-v59.js`、`assets/tomatodo-import-v61.js`：番茄 Todo 历史导入留档，当前页面使用 v61，旧版本保留作备份。
-- `assets/study-plan-v80.js`：最新逐日复习计划数据，由上传的《考研8月计划.md》生成，每日计划优先读取它。
+- `assets/tomatodo-import-v61.js`：番茄 Todo 历史导入留档。
+- `assets/study-plan-v81.js`：最新逐日复习计划数据，由上传的《考研8月计划.md》生成，每日计划优先读取它。
 - `assets/leisure-materials.js`：休闲资料更新包的预留数据文件，当前页面不主动加载，后续需要更新资料时可继续使用。
 
 ## 自嘲熊功能
 
 - 首页新增“考研倒计时”卡，数字旁边放瘫坐熊。
-- 首页新增“今日熊言”卡，支持点击“换一句”随机切换 14 条考研熊语录和姿势。
+- 首页新增“今日熊言”卡，支持点击“换一句”随机切换考研熊语录和姿势，每日自动轮换。
 - 首页已合并精简统计模块：保留文字周报和三科时长分布；已删除重复的合计数字卡、本周累计小卡和每日学习柱状图。
 - 首页已隐藏顶部说明标签和介绍文案，只保留标题、操作按钮和自嘲熊装饰。
 - 首页顺序已调整为：倒计时、开始学习、今日熊言、学习统计（合并了时长统计和本周/本月统计）。
