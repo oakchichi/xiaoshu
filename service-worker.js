@@ -1,4 +1,4 @@
-var CACHE_NAME = "xiaoshu-kaoyan-buddy-v101";
+var CACHE_NAME = "xiaoshu-kaoyan-buddy-v102";
 
 // 核心资源：安装时立即缓存（体积小，首屏必需）
 var CRITICAL_ASSETS = [

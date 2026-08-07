@@ -3144,13 +3144,13 @@
         <div class="brand-bear"></div>
         <div class="brand-text">小树<br>加油</div>
       </a>
-      <a class="nav-link nav-go active" href="#home" data-screen="home"><img class="nav-icon" src="./assets/nav-icons/nav-home.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />首页</a>
-      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="western"><img class="nav-icon" src="./assets/nav-icons/nav-western.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />西综</a>
-      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="english"><img class="nav-icon" src="./assets/nav-icons/nav-english.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />英语</a>
-      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="politics"><img class="nav-icon" src="./assets/nav-icons/nav-politics.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />政治</a>
-      <a class="nav-link nav-go" href="#stats" data-screen="stats"><img class="nav-icon" src="./assets/nav-icons/nav-stats.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />统计</a>
-      <a class="nav-link nav-go" href="#leisure" data-screen="leisure"><img class="nav-icon" src="./assets/nav-icons/nav-leisure.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />休闲</a>
-      <a class="nav-link nav-go" href="#settings" data-screen="settings"><img class="nav-icon" src="./assets/nav-icons/nav-settings.png" alt="" onerror="this.onerror=null;this.src='./assets/bear-flower.jpg';this.style.objectFit='cover';this.style.borderRadius='50%';" />设置</a>
+      <a class="nav-link nav-go active" href="#home" data-screen="home"><img class="nav-icon" src="./assets/nav-icons/nav-home.png" alt="" />首页</a>
+      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="western"><img class="nav-icon" src="./assets/nav-icons/nav-western.png" alt="" />西综</a>
+      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="english"><img class="nav-icon" src="./assets/nav-icons/nav-english.png" alt="" />英语</a>
+      <a class="nav-link nav-go" href="#subject" data-screen="subject" data-subject="politics"><img class="nav-icon" src="./assets/nav-icons/nav-politics.png" alt="" />政治</a>
+      <a class="nav-link nav-go" href="#stats" data-screen="stats"><img class="nav-icon" src="./assets/nav-icons/nav-stats.png" alt="" />统计</a>
+      <a class="nav-link nav-go" href="#leisure" data-screen="leisure"><img class="nav-icon" src="./assets/nav-icons/nav-leisure.png" alt="" />休闲</a>
+      <a class="nav-link nav-go" href="#settings" data-screen="settings"><img class="nav-icon" src="./assets/nav-icons/nav-settings.png" alt="" />设置</a>
     </nav>
 
     <main class="content">
@@ -3570,6 +3570,9 @@
       "use strict";
 
       var STORAGE_KEY = "xiaoshu_kaoyan_buddy_v1";
+      var saveDebounceTimer = null;
+      var saveCounter = 0;
+      var currentElapsed = 0;
       var BACKUP_STORAGE_KEY = "xiaoshu_kaoyan_buddy_backup_v1";
       var BACKUP_REMIND_KEY = "xiaoshu_last_backup_time";
       var THEME_KEY = "xiaoshu_theme";
@@ -4798,7 +4801,23 @@
         }
       }
 
-      function saveState() {
+      function saveState(immediate) {
+        if (immediate) {
+          if (saveDebounceTimer) {
+            clearTimeout(saveDebounceTimer);
+            saveDebounceTimer = null;
+          }
+          doSaveNow();
+          return;
+        }
+        if (saveDebounceTimer) clearTimeout(saveDebounceTimer);
+        saveDebounceTimer = setTimeout(function () {
+          saveDebounceTimer = null;
+          doSaveNow();
+        }, 2000);
+      }
+
+      function doSaveNow() {
         try {
           appState.updatedAt = new Date().toISOString();
           var data = JSON.stringify(appState);
@@ -5231,21 +5250,26 @@
       function runTimerInterval() {
         clearTimerInterval();
         timerSubject = appState.currentTimer.subject;
+        saveCounter = 0;
         timerId = setInterval(function () {
           try {
+            currentElapsed = getTimerElapsed();
             if (activeSubject === appState.currentTimer.subject) {
-              $("subjectTimer").textContent = formatTime(getTimerElapsed());
+              $("subjectTimer").textContent = formatTime(currentElapsed);
               $("timerState").textContent = "计时中";
               $("toggleTimerBtn").textContent = "暂停休息";
               $("endTimerBtn").disabled = false;
+              // 轻量更新：只刷新时间数字，不重绘整个页面
+              try {
+                $("subjectTotalTime").textContent = formatTime(Number(appState.subjectTotals[activeSubject] || 0) + currentElapsed);
+                $("subjectTodayTime").textContent = formatTime(subjectTotalToday(activeSubject) + currentElapsed);
+              } catch (e) {}
             }
           } catch (e) {}
-          try { saveState(); } catch (e) {}
-          if (activeScreen === "home") {
-            try { renderHome(); renderStats(); } catch (e) {}
-          }
-          if (activeScreen === "stats") {
-            try { renderStatsPage(); } catch (e) {}
+          saveCounter++;
+          if (saveCounter >= 15) {
+            saveCounter = 0;
+            try { saveState(); } catch (e) {}
           }
         }, 1000);
       }
@@ -5450,7 +5474,7 @@
         pausedSubject = null;
         pendingTaskPickTimer = null;
         hideTaskPickModal();
-        saveState();
+        saveState(true);
         if (!silent) {
           render();
           showToast("已结束" + subjectNameByKey(subjectKey) + "·" + category + "计时，本次" + formatTime(elapsed) + (taskText ? "已加入任务。" : "已加入累计。"));
@@ -5796,7 +5820,7 @@
           appState.currentTimer.startedAt = null;
           clearTimerInterval();
           pausedSubject = ct.subject;
-          saveState();
+          saveState(true);
           render();
           showBreakModal();
         }
@@ -7596,16 +7620,16 @@
         });
 
         window.addEventListener("beforeunload", function () {
-          saveState();
+          saveState(true);
         });
 
         window.addEventListener("pagehide", function () {
-          saveState();
+          saveState(true);
         });
 
         document.addEventListener("visibilitychange", function () {
           if (document.visibilityState === "hidden") {
-            saveState();
+            saveState(true);
             // 离开页面时推送到云端
             cloudSaveState(appState);
           } else if (document.visibilityState === "visible") {
@@ -7893,7 +7917,7 @@
       try { cleanupStaleMoves(); } catch (e) {}
 
       if ("serviceWorker" in navigator) {
-        var APP_VERSION = "v101-20260807";
+        var APP_VERSION = "v102-20260807";
         var refreshing = false;
 
         navigator.serviceWorker.addEventListener("controllerchange", function () {
@@ -7930,7 +7954,7 @@
         }
 
         window.addEventListener("load", function () {
-          navigator.serviceWorker.register("./service-worker.js?v=101").then(function (reg) {
+          navigator.serviceWorker.register("./service-worker.js?v=102").then(function (reg) {
             reg.addEventListener("updatefound", function () {
               var newWorker = reg.installing;
               if (newWorker) {
@@ -7970,7 +7994,7 @@
           ];
           if (caches && caches.keys && caches.open) {
             caches.keys().then(function(keys) {
-              var latestCache = keys.length ? keys[keys.length - 1] : "xiaoshu-kaoyan-buddy-v101";
+              var latestCache = keys.length ? keys[keys.length - 1] : "xiaoshu-kaoyan-buddy-v102";
               caches.open(latestCache).then(function(cache) {
                 HEAL_ASSETS.forEach(function(asset) {
                   cache.match(asset).then(function(cached) {
