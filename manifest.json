@@ -1,24 +1,18 @@
 {
-  "name": "熊熊考研上岸",
-  "short_name": "小熊加油",
-  "description": "淡白淡蓝清新风格的手机考研自习工作台，所有数据保存在浏览器本地。",
+  "name": "小树考研上岸",
+  "short_name": "小树考研",
+  "description": "小树考研上岸，移动端浏览器专用的本地持久化自习工作台。",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#F8FBFF",
-  "theme_color": "#5b91bf",
+  "background_color": "#DCEEFF",
+  "theme_color": "#DCEEFF",
   "icons": [
     {
       "src": "./assets/bear-flower.jpg",
-      "sizes": "506x506",
+      "sizes": "192x192",
       "type": "image/jpeg",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./assets/bear-study.gif",
-      "sizes": "550x550",
-      "type": "image/gif",
       "purpose": "any maskable"
     },
     {
