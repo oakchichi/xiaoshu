@@ -1,4 +1,4 @@
-var CACHE_NAME = "xiaoshu-kaoyan-buddy-v102";
+var CACHE_NAME = "xiaoshu-kaoyan-buddy-v103";
 
 // 核心资源：安装时立即缓存（体积小，首屏必需）
 var CRITICAL_ASSETS = [
@@ -7,6 +7,8 @@ var CRITICAL_ASSETS = [
   "./manifest.json",
   "./assets/bear-study.gif",
   "./assets/bear-cheer.gif",
+  "./assets/bear-persist.gif",
+  "./assets/bear-shine.gif",
   "./assets/bear-flower.jpg",
   "./assets/bear-flower-latest.jpg",
   "./assets/nav-icons/nav-home.png",
@@ -25,12 +27,10 @@ var CRITICAL_ASSETS = [
 // 非核心资源：安装后后台缓存（体积大，非首屏必需）
 var LAZY_ASSETS = [
   "./assets/bear-lie.gif",
-  "./assets/bear-persist.gif",
   "./assets/bear-lazy.gif",
   "./assets/bear-breakdown.gif",
   "./assets/bear-hula.gif",
   "./assets/bear-panic.gif",
-  "./assets/bear-shine.gif",
   "./assets/bear-flower-2.jpg",
   "./assets/bear-mask.gif",
   "./assets/bear-read.gif",
