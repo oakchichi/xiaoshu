@@ -13,8 +13,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="description" content="小树考研上岸，手机竖屏浏览器专用的本地持久化自习工作台。" />
   <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" href="./assets/bear-flower.jpg" />
-  <link rel="apple-touch-icon" href="./assets/bear-flower.jpg" />
+  <link rel="icon" href="./assets/icon-192.png" />
+  <link rel="apple-touch-icon" href="./assets/icon-192.png" />
   <title>小树考研上岸</title>
   <style>
     :root {
@@ -4036,7 +4036,7 @@
         ,{ text: "熊不会骗你，你真的在一点点变好", pose: "newBear11" }
         ,{ text: "考得上，来得及，为自己放个烟花", pose: "newBear01" }
         ,{ text: "每一分钟的学习熊都记在心里，知识不会辜负你", pose: "newBear07" }
-        ,{ text: "今天的错题，是明天的礼物", pose: "quoteExtra01" }
+        ,{ text: "今天的错题，是明天的礼物", pose: "newBear07" }
         ,{ text: "你远比自己想象的更有力量", pose: "quoteExtra12" }
         ,{ text: "按部就班就是伟大，稳定踏实就能上岸", pose: "quoteExtra10" }
         ,{ text: "别怕慢，怕的是停", pose: "quoteExtra11" }
@@ -7956,7 +7956,7 @@
       try { cleanupStaleMoves(); } catch (e) {}
 
       if ("serviceWorker" in navigator) {
-        var APP_VERSION = "v104-20260807";
+        var APP_VERSION = "v105-20260807";
         var refreshing = false;
 
         navigator.serviceWorker.addEventListener("controllerchange", function () {
@@ -8033,7 +8033,7 @@
           ];
           if (caches && caches.keys && caches.open) {
             caches.keys().then(function(keys) {
-              var latestCache = keys.length ? keys[keys.length - 1] : "xiaoshu-kaoyan-buddy-v104";
+              var latestCache = keys.length ? keys[keys.length - 1] : "xiaoshu-kaoyan-buddy-v105";
               caches.open(latestCache).then(function(cache) {
                 HEAL_ASSETS.forEach(function(asset) {
                   cache.match(asset).then(function(cached) {
