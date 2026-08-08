@@ -14,7 +14,9 @@
   <meta name="description" content="小树考研上岸，手机竖屏浏览器专用的本地持久化自习工作台。" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./assets/icon-192.png" />
-  <link rel="apple-touch-icon" href="./assets/icon-192.png" />
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon-180.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="./assets/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="./assets/icon-512.png" />
   <title>小树考研上岸</title>
   <style>
     :root {
@@ -7956,7 +7958,7 @@
       try { cleanupStaleMoves(); } catch (e) {}
 
       if ("serviceWorker" in navigator) {
-        var APP_VERSION = "v105-20260807";
+        var APP_VERSION = "v106-20260808";
         var refreshing = false;
 
         navigator.serviceWorker.addEventListener("controllerchange", function () {
@@ -8033,7 +8035,7 @@
           ];
           if (caches && caches.keys && caches.open) {
             caches.keys().then(function(keys) {
-              var latestCache = keys.length ? keys[keys.length - 1] : "xiaoshu-kaoyan-buddy-v105";
+              var latestCache = keys.length ? keys[keys.length - 1] : "xiaoshu-kaoyan-buddy-v106";
               caches.open(latestCache).then(function(cache) {
                 HEAL_ASSETS.forEach(function(asset) {
                   cache.match(asset).then(function(cached) {
